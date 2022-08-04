@@ -17,7 +17,7 @@ COPY package*.json ./
 RUN npm i --only=production
 COPY . .
 
-EXPOSE 8008
+EXPOSE 8008 8118
 
 HEALTHCHECK --interval=30s --timeout=30s --start-period=10s --retries=10 \
   CMD ssb-server whoami || exit 1
