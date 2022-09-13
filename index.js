@@ -1,16 +1,12 @@
 var SecretStack = require('secret-stack')
 var caps = require('ssb-caps')
-var SSB = require('ssb-db')
 
-//create a sbot with default caps. these can be overridden again when you call create.
+// create a sbot with default caps. these can be overridden again when you call create.
 function createSsbServer () {
-  return SecretStack({ caps }).use(SSB)
+  return SecretStack({ caps })
+    .use(require('ssb-db'))
 }
 module.exports = createSsbServer()
 
-//this isn't really needed anymore.
+// this isn't really needed anymore.
 module.exports.createSsbServer = createSsbServer
-
-
-
-

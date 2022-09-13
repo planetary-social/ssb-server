@@ -27,7 +27,7 @@ process.on('SIGINT', function () {
 var exited = false
 var count = 0
 function ssbServer(t, argv, opts) {
-  count ++
+  count++
   exited = false
   opts = opts || {}
 
@@ -133,21 +133,20 @@ function testSsbServer(t, opts, asConfig, port, cb) {
   })
 }
 
-var c = 0
 ;['::1', '::', '127.0.0.1', 'localhost'].forEach(function (host) {
   if(!has_ipv6 && /:/.test(host)) return
 
-  ;[9002, 9001].forEach(function (port) {
+  ;[9002, 9001].forEach(function (sbotPort) {
     ;[true, false].forEach(function (asConfig) {
       var opts = {
         host: host,
-        port: 9001,
-        ws: { port: 9002 }
+        port: sbotPort,
+        ws: { port: 9033 }
       }
 //      if(c++) return
       test('run bin.js server with ' + 
         (asConfig ? 'a config file' : 'command line options') +
-        ':'+JSON.stringify(opts)+' then connect to port:'+port
+        ':'+JSON.stringify(opts)+' then connect to port:'+sbotPort
       , function(t) {
         testSsbServer(t, opts, true, function (err) {
           t.error(err, 'Successfully connect eventually')
@@ -172,7 +171,7 @@ test('ssbServer should have websockets and http server by default', function(t) 
   try_often(10, function work(cb) {
     exec([
       join(__dirname, '../bin.js'),
-      'getAddress',
+      'address',
       'device',
       '--',
       '--host=127.0.0.1',
@@ -189,11 +188,11 @@ test('ssbServer should have websockets and http server by default', function(t) 
     t.error(err, 'ssbServer getAdress succeeds eventually')
     if (err) return end()
     t.ok(addr, 'address is not null')
-    t.comment('result of ssb-server getAddress: ' + addr)
+    t.comment('result of ssb-server address: ' + addr)
 
     var remotes = ma.decode(addr)
     console.log('remotes', remotes, addr)
-    ws_remotes = remotes.filter(function(a) {
+    var ws_remotes = remotes.filter(function(a) {
       return a.find(function(component) {
         return component.name == 'ws'
       })
@@ -242,7 +241,7 @@ test('ssb-server client should work without options', function(t) {
   try_often(10, function work(cb) {
     exec([
       join(__dirname, '../bin.js'),
-      'getAddress',
+      'address',
       'device',
       '--path', path,
       '--config', path+'/config',
@@ -254,13 +253,11 @@ test('ssb-server client should work without options', function(t) {
       cb(null, JSON.parse(stdout))  // remove quotes
     })
   }, function(err, addr) {
-    t.error(err, 'ssb-server getAddress succeeds eventually')
+    t.error(err, 'ssb-server address succeeds eventually')
     if (err) return end()
     t.ok(addr)
 
-    t.comment('result of ssb-server getAddress: ' + addr)
+    t.comment('result of ssb-server address: ' + addr)
     end()
   })
 })
-
-

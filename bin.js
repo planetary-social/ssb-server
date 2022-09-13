@@ -42,6 +42,7 @@ if (argv[0] == 'start') {
   // import ssbServer and start the server
 
   var createSsbServer = require('./')
+    .use(require('ssb-private1'))
     .use(require('ssb-onion'))
     .use(require('ssb-unix-socket'))
     .use(require('ssb-no-auth'))
@@ -138,7 +139,7 @@ if (argv[0] == 'start') {
       })()
       pull(
         source,
-        rpc.blobs.add(null, function (err, hash) {
+        rpc.blobs.add(function (err, hash) {
           if (err)
             throw err
           console.log(hash)
