@@ -58,7 +58,6 @@ if (argv[0] == 'start') {
     .use(require('ssb-query'))
     .use(require('ssb-links'))
     .use(require('ssb-ws'))
-    .use(require('ssb-ebt'))
     .use(require('ssb-ooo'))
   // add third-party plugins
 
