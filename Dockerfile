@@ -16,6 +16,7 @@ COPY --chown=node npm-shrinkwrap.json ./
 COPY package*.json ./
 RUN npm i --only=production
 COPY . .
+RUN npm install -g .
 
 EXPOSE 8008
 EXPOSE 8118
